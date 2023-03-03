@@ -4,6 +4,9 @@
   - Remember the conversation in a session
   - Uses NanumSquareNeo font (Neat looking for Korean)
 
+<img width="500" alt="Screenshot 2023-03-03 at 10 14 44 AM" src="https://user-images.githubusercontent.com/7955120/222606992-1222b47d-2fd2-4c2c-9ed1-8c0f29ff58fc.png">
+
+
 Chatbot with the background tasks processing and communications via WebSockets.
 For more details please check my article - [Heroku Chatbot with Celery, WebSockets, and Redis](https://itnext.io/heroku-chatbot-with-celery-websockets-and-redis-340fcd160f06).
 
