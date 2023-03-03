@@ -92,7 +92,7 @@ source ~/.bashrc
 ## Get source code
 
 ```bash
-git clone git@github.com:woensug-choi/SimpleWebChatGPT.git
+git clone git@github.com:woensug-choi/web-chatgpt-chatbot-django.git
 ```
 
 ## Install Dependencies
