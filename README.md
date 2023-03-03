@@ -3,6 +3,9 @@
 - Web-Based ChatGPT Chatbot
   - Remember the conversation in a session
   - Uses NanumSquareNeo font (Neat looking for Korean)
+  
+# Screenshot
+- A modified example for Korean. Source code is only in English
 
 <img width="500" alt="Screenshot 2023-03-03 at 10 14 44 AM" src="https://user-images.githubusercontent.com/7955120/222606992-1222b47d-2fd2-4c2c-9ed1-8c0f29ff58fc.png">
 
