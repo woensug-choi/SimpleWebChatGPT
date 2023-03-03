@@ -2,11 +2,263 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>{% block title %}Django Chatbot{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>{% block title %}ChatGPT{% endblock %}</title>
+    <style>
+
+        /* Add Nanum fonts */
+        @font-face {
+        font-family: NanumSquareNeo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoOTF-aLt.otf") format('truetype');
+        font-weight: 200;
+        }
+        @font-face {
+        font-family: NanumSquareNeo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoTTF-bRg.eot?#iefix") format('embedded-opentype'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoTTF-bRg.woff2") format('woff2'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main//NanumSquareNeoTTF-bRg.woff") format('woff'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main//NanumSquareNeoOTF-bRg.otf") format('opentype');
+        font-weight: 400;
+        }
+        @font-face {
+        font-family: NanumSquareNeo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoTTF-cBd.eot?#iefix") format('embedded-opentype'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoTTF-cBd.woff2") format('woff2'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumSquareNeoTTF-cBd.woff") format('woff'),
+            url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main//NanumSquareNeoOTF-cBd.otf") format('opentype');
+        font-weight: 700;
+        }
+
+        @font-face {
+        font-family: NanumMyeongjo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumMyeongjo.otf") format('truetype');
+        font-weight: 200;
+        }
+        @font-face {
+        font-family: NanumMyeongjo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumMyeongjoBold.otf") format('truetype');
+        font-weight: 400;
+        }
+        @font-face {
+        font-family: NanumMyeongjo;
+        src: url("https://raw.githubusercontent.com/woensug-choi/NanumSquareNeoFont/main/NanumMyeongjoExtraBold.otf") format('truetype');
+        font-weight: 700;
+        }
+
+
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: "NanumSquareNeo", sans-serif;
+        }
+      
+        body {
+          padding-top: constant(safe-area-inset-top);
+          height: 100%;
+          margin: 0;
+          overflow-y: scroll;
+          viewport-fit: cover;
+          font-family: "NanumSquareNeo", sans-serif;
+          background-color: #f0f0f0;
+        }
+        
+        /* Adjust styles for smaller screens */
+        @media only screen and (max-width: 500px) {
+          #chat-container {
+            max-width: none;
+            padding: 5px;
+          }
+          
+          #display {
+            height: 150px;
+          }
+        }
+
+        /* match the color of the notch section with the body */
+        /* you may need to adjust the color value to match your body background color */
+        @media screen and (min-width: 375px) and (max-width: 812px) {
+          body {
+            background-color: #f0f0f0 !important; /* set the background color of the body */
+            padding-top: env(safe-area-inset-top) !important;; /* apply padding to the top of the body equal to the height of the notch */
+          }
+        }
+
+        /* remove the border of the notch section */
+        /* you may need to adjust the border value to match your design */
+        @media screen and (min-width: 375px) and (max-width: 812px) {
+          body::before {
+            content: ""; /* create a pseudo-element before the body element */
+            display: block;
+            height: env(safe-area-inset-top) !important;; /* set the height of the pseudo-element to the height of the notch */
+            background-color: #f0f0f0; /* set the background color of the pseudo-element to match the body background color */
+            border: none !important; /* remove the border of the pseudo-element */
+          }
+        }
+        .notch {
+          background-color: #f0f0f0; /* set the background color of the notch area to match the body */
+          height: env(safe-area-inset-top);
+          border: none; /* remove the border */
+        }
+
+        .spinner-border {
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          vertical-align: text-bottom;
+          border: .25em solid currentColor;
+          border-right-color: transparent;
+          border-radius: 50%;
+          -webkit-animation: spinner-border .75s linear infinite;
+                  animation: spinner-border .75s linear infinite;
+        }
+
+        .spinner-border-sm {
+          width: 1rem;
+          height: 1rem;
+          border-width: .2em;
+        }
+
+        @-webkit-keyframes spinner-border {
+          to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @keyframes spinner-border {
+          to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        hr {
+          border-color: rgb(214, 214, 214);
+        }
+
+        #chat-container {
+          position: fixed;
+          top: 0px;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: #fff;
+          border-top: 1px solid #ccc;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+        }
+        
+        #input {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+        }
+      
+        #chat-log {
+          flex-grow: 1;
+          overflow-y: auto;
+          font-size: 16px;
+          line-height: 1.75;
+          font-family: "NanumSquareNeo", sans-serif;
+          padding: 10px;
+          resize: none;
+          border: none;
+          margin-bottom: 10px;
+        }
+
+        #display {
+          flex-grow: 1;
+          font-size: 16px;
+          line-height: 1.75;
+          font-family: "NanumSquareNeo", sans-serif;
+          padding: 10px;
+          resize: none;
+          border: none;
+          margin-bottom: 10px;
+          height: 200px;
+          overflow-y: auto;
+        }
+      
+        #chat-message-input {
+          width: 72%;
+          border: 1px solid #ccc;
+          outline: none;
+          font-size: 12px;
+          font-family: "NanumSquareNeo", sans-serif;
+          padding: 10px;
+          margin-left: 1px;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          background-color: #f0f0f0;
+          border-radius: 5px;
+        }
+      
+        #chat-message-submit {
+          width: 23%;
+          border: none;
+          outline: none;
+          font-size: 18px;
+          font-family: "NanumSquareNeo", sans-serif;
+          padding: 13px;
+          background-color: #4CAF50;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 5px;
+          margin-top: auto;
+          margin-bottom: 10px;
+          margin-left: auto;
+          margin-right: 0;
+        }
+      
+        #chat-message-submit:hover {
+          background-color: #3e8e41;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+            background-color: #f5f5f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #c1c1c1;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #a1a1a1;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f5f5f5;
+        }
+
+        #code-block pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        #code-block code {
+        font-family: "Consolas", "Courier New", monospace;
+        color: #333;
+        }
+
+        /* .copy-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        } */
+
+
+      </style>
 </head>
+
 <body>
     {% block body %}
     {% endblock %}
 </body>
 {% block scripts%}{% endblock %}
+
 </html>
