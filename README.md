@@ -67,6 +67,9 @@ You may see redis url and port. To exit, type `exit`.
 - If you want to fix it and don't type every time
   
   ```bash
+  # Prompt option
+  echo 'export PROMPT_OPTION="Response in 40 words maximum."' >> ~/.bashrc
+  
   # Export Redis URL (default redis url and port is 127.0.0.1:6379)
   echo "export REDIS_URL='redis://127.0.0.1:6379'" >> ~/.bashrc
 
